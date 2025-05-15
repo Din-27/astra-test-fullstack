@@ -9,6 +9,7 @@ export default function DragAndDropItem({
   handleUpdateOrderDrag,
   handleEditItem,
   handleDeleteItem,
+  handleOnDrawer,
 }) {
   const handleOnDragEnd = async (result) => {
     if (!result.destination) {
@@ -82,6 +83,7 @@ export default function DragAndDropItem({
                     </li>
                     {dropdown.condtion && dropdown.id === index && (
                       <DropdownList
+                        handleDetail={() => handleOnDrawer(item.id)}
                         handleEditItem={() => handleEditItem(item)}
                         handleDeleteItem={(e) => handleDeleteItem(item.id, e)}
                       />

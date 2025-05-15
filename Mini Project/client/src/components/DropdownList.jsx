@@ -1,8 +1,34 @@
 import React from "react";
 
-export default function DropdownList({ handleEditItem, handleDeleteItem }) {
+export default function DropdownList({
+  handleDetail,
+  handleEditItem,
+  handleDeleteItem,
+}) {
   return (
     <ul className="absolute z-20 right-0 bg-white border rounded">
+      <li
+        onClick={handleDetail}
+        className="border-b cursor-pointer hover:bg-gray-400 py-1 px-2 flex w-24 space-x-2"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="icon icon-tabler icons-tabler-outline icon-tabler-file"
+        >
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+          <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+        </svg>
+        <span>Detail</span>
+      </li>
       <li
         onClick={handleEditItem}
         className="border-b cursor-pointer hover:bg-gray-400 py-1 px-2 flex w-24 space-x-2"

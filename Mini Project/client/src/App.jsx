@@ -1,4 +1,5 @@
 import DragAndDropItem from "./components/DragAndDropItem";
+import Drawer from "./components/Drawer";
 import ModalItem from "./components/ModalItem";
 import Spinner from "./components/Spinner";
 import { useTodo } from "./hook/use-todo";
@@ -18,19 +19,32 @@ function App() {
     handleUpdateOrderTodo,
     handleUpdateTodo,
     handleModalAdd,
+    handleDrawer,
     modal,
+    drawer,
   } = useTodo();
 
-  if (data.length === 0) {
+  if (!data) {
     return <Spinner />;
   }
+  console.log(drawer);
 
   return (
     <>
       {dropdown.condtion && (
         <div
-          className="absolute w-full h-full z-10"
+          className={`absolute w-full h-full z-10 ${
+            drawer.display ? "bg-gray-800 opacity-50" : ""
+          }`}
           onClick={handleOffOption}
+        />
+      )}
+      {drawer.display && (
+        <div
+          className={`absolute w-full h-full z-10 ${
+            drawer.display ? "bg-gray-800 opacity-50" : ""
+          }`}
+          onClick={handleDrawer}
         />
       )}
       <div className="flex justify-center p-6">
@@ -68,6 +82,7 @@ function App() {
             handleEditItem={handleEditItem}
             handleUpdateOrderDrag={handleUpdateOrderTodo}
             handleDeleteItem={handleDeleteTodo}
+            handleOnDrawer={handleDrawer}
           />
         </div>
       </div>
@@ -88,6 +103,9 @@ function App() {
           handleSubmit={(e) => handleUpdateTodo(form.id, e)}
           handleOffModal={handleOffModalEdit}
         />
+      )}
+      {drawer.display && (
+        <Drawer data={drawer.data} handleCloseDrawer={handleDrawer} />
       )}
     </>
   );

@@ -18,6 +18,7 @@ export const useTodo = () => {
   });
   const [dropdown, setDropdown] = useState({ condtion: false, id: null });
   const [modal, setModal] = useState({ display: false, type: "" });
+  const [drawer, setDrawer] = useState({ display: false, data: null });
 
   const handleOption = (index) => {
     setDropdown((prev) => {
@@ -27,6 +28,19 @@ export const useTodo = () => {
         condtion: !prev.condtion,
       };
     });
+  };
+
+  const handleDrawer = async (id) => {
+    const result = await getTodoById(id);
+    setDropdown((prev) => ({
+      ...prev,
+      condtion: false,
+    }));
+    setDrawer((prev) => ({
+      ...prev,
+      display: !prev.display,
+      data: result.data,
+    }));
   };
 
   const handleOffOption = () => {
@@ -163,7 +177,9 @@ export const useTodo = () => {
     handleOption,
     handleModalAdd,
     handleOffModalEdit,
+    handleDrawer,
     dropdown,
+    drawer,
     modal,
     form,
     data,
