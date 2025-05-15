@@ -36,7 +36,7 @@ export const deleteData = (req: Request<{ id: string }>, res: Response) => {
   if (index === -1) {
     return res.status(404).send({ message: `data with id: ${id} not found !` });
   }
-  data.splice(Number(id), 1);
+  data.splice(index, 1);
   res.status(200).send({ message: "Data deleted" });
 };
 
