@@ -26,6 +26,7 @@ export default function DragAndDropItem({
       })
     );
   };
+  console.clear();
 
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>

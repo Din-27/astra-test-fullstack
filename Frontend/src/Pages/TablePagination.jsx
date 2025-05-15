@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { API } from "../lib/axios";
+import PaginationComponent from "@/components/Pagination";
 import {
   Table,
   TableBody,
@@ -13,16 +14,25 @@ import {
 } from "@/components/ui/table";
 import Spinner from "@/components/Spinner";
 
-export default function FetchingFromJsonPlaceholder() {
-  const [todos, setTodos] = useState([]);
-  const [error, setError] = useState("");
+export default function TablePagination() {
+  const LIMIT = 10;
+  const [todos, setTodos] = useState({ data: [], total: 0 });
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [page, setPage] = useState(1);
+  const TOTAL_PAGE = todos.total / LIMIT;
 
   const handleGetData = async () => {
     try {
-      const data = await API.get("/todos");
+      const total = await API.get("/todos");
+      const data = await API.get("/todos", {
+        params: {
+          _page: page,
+          _limit: LIMIT,
+        },
+      });
       if (data.status === 200) {
-        setTodos(data.data);
+        setTodos({ data: data.data, total: total.data.length });
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -43,7 +53,7 @@ export default function FetchingFromJsonPlaceholder() {
 
   useEffect(() => {
     handleGetData();
-  }, []);
+  }, [page]);
 
   return error ? (
     <div className="flex justify-center w-full min-h-screen items-center">
@@ -56,6 +66,7 @@ export default function FetchingFromJsonPlaceholder() {
   ) : (
     <div className="flex justify-center w-full min-h-screen my-6">
       <div className="w-3/5 my-auto">
+        <h2 className="font-bold text-xl mb-2">Todo - Page {page}</h2>
         <Table>
           <TableCaption>A list of your recent name.</TableCaption>
           <TableHeader>
@@ -66,9 +77,9 @@ export default function FetchingFromJsonPlaceholder() {
             </TableRow>
           </TableHeader>
           <TableBody className={"border border-gray-800"}>
-            {todos.map((item, index) => (
+            {todos.data.map((item, index) => (
               <TableRow className={"border border-gray-800"} key={index}>
-                <TableCell>{index + 1}.</TableCell>
+                <TableCell>{item.id}.</TableCell>
                 <TableCell className="font-medium text-left">
                   {item.title}
                 </TableCell>
@@ -114,6 +125,11 @@ export default function FetchingFromJsonPlaceholder() {
             ))}
           </TableBody>
         </Table>
+        <PaginationComponent
+          currentPage={page}
+          totalPages={TOTAL_PAGE}
+          onPageChange={(p) => setPage(p)}
+        />
       </div>
     </div>
   );

@@ -20,8 +20,6 @@ app.use(bodyParser());
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-app.use(middlewares.notFound);
-
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
   /* eslint-disable no-console */

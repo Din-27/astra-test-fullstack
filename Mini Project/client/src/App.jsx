@@ -27,8 +27,7 @@ function App() {
   if (!data) {
     return <Spinner />;
   }
-  console.log(drawer);
-
+  console.clear();
   return (
     <>
       {dropdown.condtion && (

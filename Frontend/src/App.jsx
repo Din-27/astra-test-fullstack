@@ -2,8 +2,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ItemList from "./Pages/ItemList";
 import ContactForm from "./Pages/ContactForm";
 import FetchingFromJsonPlaceholder from "./Pages/FetchingFromJsonPlaceholder";
-import Pagination from "./Pages/Pagination";
+import TablePagination from "./Pages/TablePagination";
 import Home from "./Pages/Home";
+
+const dataList = [{ name: "Apple" }, { name: "Banana" }, { name: "Cherry" }];
 
 export const routes = [
   {
@@ -12,7 +14,7 @@ export const routes = [
   },
   {
     path: "/item",
-    element: <ItemList />,
+    element: <ItemList data={dataList} />,
   },
   {
     path: "/contact-form",
@@ -24,7 +26,7 @@ export const routes = [
   },
   {
     path: "/pagination",
-    element: <Pagination />,
+    element: <TablePagination />,
   },
 ];
 

@@ -1,71 +1,81 @@
-import React, { useState } from "react";
+import React from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
+
+const formSchema = z.object({
+  name: z.string().min(2, {
+    message: "name must be at least 2 characters.",
+  }),
+  email: z.string().email().min(2, {
+    message: "email must be at least 2 characters.",
+  }),
+});
 
 export default function ContactForm() {
-  const [error, setError] = useState({ value: "", message: "" });
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+    },
   });
 
-  const handleChange = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setForm({
-      ...form,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (form.name === "" || form.name.length === 0) {
-      setError({ value: "name", message: `Name is required !` });
-    } else if (form.email === "" || form.email.length === 0) {
-      setError({ value: "email", message: `Email is required !` });
-    } else {
-      setError({ value: "", message: "" });
-      return alert("Succses");
-    }
-  };
-
+  function onSubmit(values) {
+    toast.success(
+      `Data with name: ${values.name} & email: ${values.email}, Success`,
+      {
+        style: {
+          background: "green",
+          color: "white",
+        },
+      }
+    );
+  }
   return (
     <div className="flex justify-center items-center min-h-screen">
-      <form className="flex flex-col gap-y-4" onSubmit={handleSubmit}>
-        <label htmlFor="Name">
-          <span className="font-medium text-gray-700"> Name </span>
-          {error.message && error.value === "name" && (
-            <p className="text-red-800 text-sm">{error.message}</p>
-          )}
-          <input
-            id="Name"
-            className="p-1 mt-0.5 w-full rounded border shadow-sm sm:text-sm"
-            onChange={handleChange}
-            value={form.name}
-            type="text"
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <FormField
+            control={form.control}
             name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input className={"w-[300px] border border-gray-600"} placeholder="shadcn" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </label>
-        <label htmlFor="Email">
-          <span className="font-medium text-gray-700"> Email </span>
-          {error.message && error.value === "email" && (
-            <p className="text-red-800 text-sm">{error.message}</p>
-          )}
-          <input
-            id="Email"
-            className="p-1 mt-0.5 w-full rounded border shadow-sm sm:text-sm"
-            onChange={handleChange}
-            value={form.email}
-            type="text"
+          <FormField
+            control={form.control}
             name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input className={"w-[300px] border border-gray-600"} placeholder="shadcn@mail.com" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </label>
-        <button
-          type="submit"
-          className="inline-block rounded-sm border border-indigo-600 bg-indigo-600 py-2 text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:ring-3 focus:outline-hidden"
-        >
-          Submit
-        </button>
-      </form>
+          <Button type="submit">Submit</Button>
+        </form>
+      </Form>
     </div>
   );
 }

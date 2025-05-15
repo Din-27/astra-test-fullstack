@@ -31,7 +31,10 @@ export const useTodo = () => {
   };
 
   const handleDrawer = async (id) => {
-    const result = await getTodoById(id);
+    let result = null;
+    if (typeof id === "number") {
+      result = await getTodoById(id);
+    }
     setDropdown((prev) => ({
       ...prev,
       condtion: false,
@@ -39,7 +42,7 @@ export const useTodo = () => {
     setDrawer((prev) => ({
       ...prev,
       display: !prev.display,
-      data: result.data,
+      data: result ? result.data : null,
     }));
   };
 

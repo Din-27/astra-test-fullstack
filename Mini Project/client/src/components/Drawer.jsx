@@ -5,7 +5,7 @@ export default function Drawer({ data, handleCloseDrawer }) {
     <div
       id="drawer-example"
       className="border fixed top-0 bottom-0 left-0 z-40 h-screen p-4 overflow-y-auto transition-transform bg-white w-80"
-      tabindex="-1"
+      tabIndex="-1"
       aria-labelledby="drawer-label"
     >
       <h5

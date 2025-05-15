@@ -10,7 +10,7 @@ export default function ModalItem({
   return (
     <div
       id="crud-modal"
-      tabindex="-1"
+      tabIndex="-1"
       aria-hidden="true"
       className="absolute overflow-y-auto overflow-x-hidden top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
     >

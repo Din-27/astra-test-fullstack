@@ -45,7 +45,10 @@ export const getTodos = async () => {
 
 export const createTodo = async (data) => {
   try {
-    const result = await API.post("/todo", data);
+    const result = await API.post("/todo", {
+      description: data.description,
+      name: data.name,
+    });
     if (result.status === 200) {
       return result;
     }
