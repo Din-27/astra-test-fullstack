@@ -6,13 +6,6 @@ type RequestValidateOptions = {
   schema: Joi.ObjectSchema<any> | Joi.ArraySchema<any>;
 };
 
-export function notFound(ctx: Context, next: Next) {
-  ctx.status = 404;
-  const error = new Error(`🔍 - Not Found - ${ctx.request.originalUrl}`);
-  ctx.message = String(error);
-  next();
-}
-
 export const requestValidate = (options: RequestValidateOptions) => {
   return async (ctx: Context, next: Next) => {
     const data =
@@ -26,7 +19,7 @@ export const requestValidate = (options: RequestValidateOptions) => {
 
     if (error) {
       ctx.status = 400;
-      ctx.message = error.details[0].message;
+      ctx.body = { message: error.details[0].message };
       return;
     }
 

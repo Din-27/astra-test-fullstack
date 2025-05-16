@@ -6,7 +6,7 @@ import {
   getTodos,
   updateTodo,
 } from "../controllers/todo.controller";
-import { requestValidate } from "../middlewares";
+import { requestValidate } from "../middlewares/requestValidate";
 import {
   CreateTodoSchema,
   DeleteTodoSchema,

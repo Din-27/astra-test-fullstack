@@ -7,7 +7,7 @@ import {
   updateOrderTodo,
   updateTodo,
 } from "../controllers/todo.controller";
-import { requestValidate } from "../middleware/middlewares";
+import { requestValidate } from "../middleware/requestValidate";
 import {
   CreateTodoSchema,
   TodoByIdSchema,

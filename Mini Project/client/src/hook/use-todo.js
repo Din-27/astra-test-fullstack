@@ -12,6 +12,7 @@ import { useEffect } from "react";
 
 export const useTodo = () => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true)
   const [form, setForm] = useState({
     name: "",
     description: "",
@@ -108,11 +109,18 @@ export const useTodo = () => {
   };
 
   const handleGetTodos = async () => {
-    const result = await getTodos();
-    if (result.status === 200) {
-      setData(result.data);
-    } else {
-      toast.error(result);
+    setLoading(true)
+    try {
+      const result = await getTodos();
+      if (result.status === 200) {
+        setData(result.data);
+      } else {
+        toast.error(result);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message || error.message)
+    } finally {
+      setLoading(false)
     }
   };
 

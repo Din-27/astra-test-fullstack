@@ -1,6 +1,6 @@
 import { Context } from "koa";
-import { ITodo } from "../libs/interfaces/todo";
-import { TData, TodoRepository } from "../libs/repository/todo.repository";
+import { ITodo } from "../../libs/interfaces/todo";
+import { TData, TodoRepository } from "../../libs/repository/todo.repository";
 
 export const getTodos = async (ctx: Context) => {
   try {
@@ -11,9 +11,7 @@ export const getTodos = async (ctx: Context) => {
     return;
   } catch (error) {
     console.log(error);
-    ctx.status = 500;
-    ctx.message = "Server Error !";
-    return;
+    throw new Error("Server Error");
   }
 };
 
@@ -27,9 +25,8 @@ export const getTodoById = async (ctx: Context) => {
     return;
   } catch (error) {
     console.log(error);
-    ctx.status = 500;
-    ctx.message = "Server Error !";
-    return;
+    console.log(error);
+    throw new Error("Server Error");
   }
 };
 
@@ -40,7 +37,7 @@ export const createTodo = async (ctx: Context) => {
     const todo = await todoRepo.findOne({ where: { name: String(name) } });
     if (todo) {
       ctx.status = 409;
-      ctx.message = `Todo with name: ${name}, already exist !`;
+      ctx.body = { message: `Todo with name: ${name}, already exist !` };
       return;
     }
     const data = await todoRepo.create({
@@ -55,9 +52,7 @@ export const createTodo = async (ctx: Context) => {
     return;
   } catch (error) {
     console.log(error);
-    ctx.status = 500;
-    ctx.message = "Server Error !";
-    return;
+    throw new Error("Server Error");
   }
 };
 
@@ -69,7 +64,7 @@ export const updateTodo = async (ctx: Context) => {
     const todo = await todoRepo.findOne({ where: { id: Number(id) } });
     if (!todo) {
       ctx.status = 404;
-      ctx.message = `Todo with id: ${id}, Not Found !`;
+      ctx.body = { message: `Todo with id: ${id}, Not Found !` };
       return;
     }
     const data = await todoRepo.update({
@@ -85,9 +80,7 @@ export const updateTodo = async (ctx: Context) => {
     return;
   } catch (error) {
     console.log(error);
-    ctx.status = 500;
-    ctx.message = "Server Error !";
-    return;
+    throw new Error("Server Error");
   }
 };
 
@@ -97,7 +90,7 @@ export const updateOrderTodo = async (ctx: Context) => {
     const todoRepo = new TodoRepository();
     for (const item of body) {
       const { id, name, description, order } = item;
-      const data = await todoRepo.update({
+      await todoRepo.update({
         where: { id },
         data: {
           description,
@@ -110,9 +103,7 @@ export const updateOrderTodo = async (ctx: Context) => {
     return;
   } catch (error) {
     console.log(error);
-    ctx.status = 500;
-    ctx.message = "Server Error !";
-    return;
+    throw new Error("Server Error");
   }
 };
 
@@ -123,7 +114,7 @@ export const deleteTodo = async (ctx: Context) => {
     const todo = await todoRepo.findOne({ where: { id: Number(id) } });
     if (!todo) {
       ctx.status = 404;
-      ctx.message = `Todo with id: ${id}, Not Found !`;
+      ctx.body = { message: `Todo with id: ${id}, Not Found !` };
       return;
     }
     const data = await todoRepo.destroy({
@@ -134,8 +125,6 @@ export const deleteTodo = async (ctx: Context) => {
     return;
   } catch (error) {
     console.log(error);
-    ctx.status = 500;
-    ctx.message = "Server Error !";
-    return;
+    throw new Error("Server Error");
   }
 };

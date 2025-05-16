@@ -54,7 +54,7 @@ export default function FetchingFromJsonPlaceholder() {
       <Spinner />
     </div>
   ) : (
-    <div className="flex justify-center w-full min-h-screen my-6">
+    <div className="flex justify-center w-full min-h-screen my-24">
       <div className="w-3/5 my-auto">
         <Table>
           <TableCaption>A list of your recent name.</TableCaption>

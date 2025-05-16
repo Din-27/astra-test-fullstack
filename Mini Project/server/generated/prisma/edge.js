@@ -130,7 +130,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Herdin\\Test\\Test-Astra\\Mini Project\\server\\src\\generated\\prisma",
+      "value": "C:\\HERDIYANA\\LEARNING\\astra-test-fullstack\\Mini Project\\server\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -144,14 +144,14 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Herdin\\Test\\Test-Astra\\Mini Project\\server\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\HERDIYANA\\LEARNING\\astra-test-fullstack\\Mini Project\\server\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
     "rootEnvPath": null,
-    "schemaEnvPath": "../../../.env"
+    "schemaEnvPath": "../../.env"
   },
-  "relativePath": "../../../prisma",
+  "relativePath": "../../prisma",
   "clientVersion": "6.7.0",
   "engineVersion": "3cff47a7f5d65c3ea74883f1d736e41d68ce91ed",
   "datasourceNames": [
@@ -167,8 +167,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Todos {\n  id          Int      @id @default(autoincrement())\n  name        String\n  description String?\n  order       Int?\n  createdAt   DateTime @default(now())\n}\n",
-  "inlineSchemaHash": "301f311aa7d77175000992e5cd2131b415a2258fc6fc721188d4b043412a9b21",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Todos {\n  id          Int      @id @default(autoincrement())\n  name        String\n  description String?\n  order       Int?\n  createdAt   DateTime @default(now())\n}\n",
+  "inlineSchemaHash": "1c76b6a2e219b5ea3b8fa3f294850a1e42536bc4adbc6ea9667107a41640372d",
   "copyEngine": true
 }
 config.dirname = '/'

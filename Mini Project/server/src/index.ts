@@ -5,13 +5,16 @@ import helmet from "helmet";
 import cors from "cors";
 import bodyParser from "koa-bodyparser";
 
-import * as middlewares from "./middleware/middlewares";
-import router from "./routes/routes";
+import router from "./http/routes/routes";
+import { requestLogger } from "./http/middleware/requestLogger";
+import { handlingError } from "./http/middleware/error";
 
 require("dotenv").config();
 
 const app = new Koa();
 
+app.use(requestLogger);
+app.use(handlingError);
 app.use(koaConnect(morgan("dev")));
 app.use(koaConnect(helmet()));
 app.use(koaConnect(cors()));

@@ -6,37 +6,62 @@ export type TData = Omit<ITodo, "id">;
 
 export class TodoRepository {
   async findAll() {
-    return await prisma.todos.findMany({
-      orderBy: {
-        order: "asc",
-      },
-    });
+    try {
+      return await prisma.todos.findMany({
+        orderBy: {
+          order: "asc",
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error Database");
+    }
   }
 
   async findOne(props: { where: { id?: number; name?: string } }) {
-    return await prisma.todos.findFirst({
-      where: props.where,
-    });
+    try {
+      return await prisma.todos.findFirst({
+        where: props.where,
+      });
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error Database");
+    }
   }
 
   async create(props: { data: TData }) {
-    return await prisma.todos.create({
-      data: {
-        ...props.data,
-      },
-    });
+    try {
+      return await prisma.todos.create({
+        data: {
+          ...props.data,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error Database");
+    }
   }
 
   async update(props: { where: { id: number }; data: TData }) {
-    return await prisma.todos.update({
-      where: props.where,
-      data: props.data,
-    });
+    try {
+      return await prisma.todos.update({
+        where: props.where,
+        data: props.data,
+      });
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error Database");
+    }
   }
 
   async destroy(props: { where: { id: number } }) {
-    return await prisma.todos.delete({
-      where: props.where,
-    });
+    try {
+      return await prisma.todos.delete({
+        where: props.where,
+      });
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error Database");
+    }
   }
 }

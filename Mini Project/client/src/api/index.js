@@ -10,7 +10,7 @@ export const getTodoById = async (id) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        return error.response.data || error.message;
+        return error.response.data.message || error.message;
       } else if (error.request) {
         return "No response from server";
       } else {
@@ -31,7 +31,7 @@ export const getTodos = async () => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        return error.response.data || error.message;
+        return error.response.data.message || error.message;
       } else if (error.request) {
         return "No response from server";
       } else {
@@ -55,7 +55,7 @@ export const createTodo = async (data) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        return error.response.data || error.message;
+        return error.response.data.message || error.message;
       } else if (error.request) {
         return "No response from server";
       } else {
@@ -76,7 +76,7 @@ export const updateOrderTodo = async (dataOrder) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        return error.response.data || error.message;
+        return error.response.data.message || error.message;
       } else if (error.request) {
         return "No response from server";
       } else {
@@ -97,7 +97,7 @@ export const updateTodo = async ({ id, data }) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        return error.response.data || error.message;
+        return error.response.data.message || error.message;
       } else if (error.request) {
         return "No response from server";
       } else {
@@ -118,7 +118,7 @@ export const deleteTodo = async (id) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        return error.response.data || error.message;
+        return error.response.data.message || error.message;
       } else if (error.request) {
         return "No response from server";
       } else {
