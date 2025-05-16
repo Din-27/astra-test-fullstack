@@ -16,16 +16,16 @@ export default function PaginationComponent({
 }) {
   const getVisiblePages = () => {
     const maxVisiblePages = 3;
-    let start = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let end = start + maxVisiblePages - 1;
+    let startIndex = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endIndex = startIndex + maxVisiblePages - 1;
 
-    if (end > totalPages) {
-      end = totalPages;
-      start = Math.max(1, end - maxVisiblePages + 1);
+    if (endIndex > totalPages) {
+      endIndex = totalPages;
+      startIndex = Math.max(1, endIndex - maxVisiblePages + 1);
     }
 
     const pages = [];
-    for (let i = start; i <= end; i++) {
+    for (let i = startIndex; i <= endIndex; i++) {
       pages.push(i);
     }
 
