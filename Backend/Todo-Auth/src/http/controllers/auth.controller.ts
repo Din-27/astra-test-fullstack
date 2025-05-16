@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import IUser from "../interfaces/User";
+import IUser from "../../libs/interfaces/User";
 import bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import Joi from "joi";

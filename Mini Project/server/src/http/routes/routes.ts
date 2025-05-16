@@ -30,15 +30,15 @@ router.post(
   createTodo
 );
 
-router.put(
+router.patch(
   "/:id",
-  requestValidate({ type: "PUT", schema: UpdateTodoSchema }),
+  requestValidate({ type: "PATCH", schema: UpdateTodoSchema }),
   updateTodo
 );
 
-router.patch(
+router.put(
   "/",
-  requestValidate({ type: "PATCH", schema: UpdateTodoOrderSchema }),
+  requestValidate({ type: "PUT", schema: UpdateTodoOrderSchema }),
   updateOrderTodo
 );
 

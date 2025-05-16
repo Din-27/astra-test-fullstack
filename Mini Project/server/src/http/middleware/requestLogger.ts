@@ -1,7 +1,6 @@
-import { NextFunction, Request, Response } from "express";
 import { loggerFile } from "../../libs/logger";
 import chalk from "chalk";
-import { Context } from "koa";
+import { Context, Next } from "koa";
 
 type TStatusCodeLabel = {
   label: "SUCCESS" | "WARNING" | "DANGER";
@@ -43,7 +42,7 @@ function colorLog(level: string, message: string): void {
   console.log(coloredMsg);
 }
 
-export const requestLogger = async (ctx: Context, next: NextFunction) => {
+export const requestLogger = async (ctx: Context, next: Next) => {
   const start = Date.now();
   const reqBody = JSON.stringify(ctx.body);
   const reqParams = JSON.stringify(ctx.params);

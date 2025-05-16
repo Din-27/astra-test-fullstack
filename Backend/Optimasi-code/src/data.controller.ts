@@ -20,13 +20,14 @@ export const createData = (
 ) => {
   try {
     const newData = req.body;
-    const id = data.length > 0 ? Math.max(...data.map((item) => item.id)) : 1;
-    const index = data.findIndex((item) => item.id === Number(id));
-    if (index !== -1) {
+    const findOne = data.find((item) => item.title === newData.title);
+    if (findOne) {
       return res
         .status(404)
-        .send({ message: `data with id: ${id}, already exist !` });
+        .send({ message: `data with name: ${findOne.title}, already exist !` });
     }
+    const id =
+      data.length > 0 ? Math.max(...data.map((item) => item.id)) + 1 : 1;
     data.push({ ...newData, id });
     res.status(200).send({ message: "Data created" });
   } catch (error) {
@@ -64,6 +65,12 @@ export const updateData = (
       return res
         .status(404)
         .send({ message: `data with id: ${id} not found !` });
+    }
+    const filterName = data.find((item) => item.title === title && item.id !== Number(id));
+    if (filterName) {
+      return res
+        .status(409)
+        .send({ message: `data with title: ${filterName.title}, already exist !` });
     }
     data[index].description = description;
     data[index].title = title;

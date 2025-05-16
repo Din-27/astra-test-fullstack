@@ -11,7 +11,7 @@ export const requestValidate = (options: RequestValidateOptions) => {
     const data =
       options.type === "GET"
         ? ctx.params
-        : options.type === "POST"
+        : options.type === "POST" || options.type === "PUT"
         ? ctx.request.body
         : { ...(ctx.request.body ?? {}), ...ctx.params };
 

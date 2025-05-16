@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
-import ITodo from "../interfaces/Todo";
+import ITodo from "../../libs/interfaces/Todo";
 
 const todos: Array<ITodo> = [];
 
 type TCreateTodo = Omit<ITodo, "id">;
 
 export const getTodos = async (
-  req: Request,
+  _: Request,
   res: Response<Array<ITodo> | { message: string }>
 ) => {
   try {
@@ -19,12 +19,12 @@ export const getTodos = async (
 
 export const getTodoById = async (
   req: Request<{ id: string }>,
-  res: Response<ITodo | { message: string }>
+  res: Response<ITodo | { message: string } | {}>
 ) => {
   const { id } = req.params;
   try {
     const filter = todos.find((item) => item.id === Number(id));
-    return res.status(200).send(filter);
+    return res.status(200).send(filter || {});
   } catch (error) {
     console.log(error);
     return res.status(500).send({ message: "Server Error" });
@@ -43,8 +43,10 @@ export const createTodo = async (
         .status(409)
         .send({ message: `todo with title: ${filter.title}, already exist !` });
     }
+
     const getLastId =
-      todos.length > 0 ? Math.max(...todos.map((item) => item.id)) : 1;
+      todos.length >= 1 ? Math.max(...todos.map((item) => item.id)) + 1 : 1;
+
     todos.push({
       id: getLastId,
       completed,
@@ -69,6 +71,14 @@ export const updateTodo = async (
       return res
         .status(404)
         .send({ message: `todo with id: ${id}, not found !` });
+    }
+    const filterName = todos.find(
+      (item) => item.title === title && item.id !== Number(id)
+    );
+    if (filterName) {
+      return res.status(409).send({
+        message: `todo with title: ${filterName.title}, already exist !`,
+      });
     }
     const index = todos.findIndex((item) => item.id === Number(id));
     if (index !== -1) {

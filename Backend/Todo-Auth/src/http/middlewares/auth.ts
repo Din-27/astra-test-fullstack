@@ -1,6 +1,6 @@
 import * as jwt from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
-import ErrorResponse from "../interfaces/ErrorResponse";
+import ErrorResponse from "../../libs/interfaces/ErrorResponse";
 
 export function authMiddleware(
   req: Request,

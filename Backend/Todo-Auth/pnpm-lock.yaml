@@ -23,6 +23,9 @@ importers:
       express:
         specifier: ^4.21.1
         version: 4.21.2
+      express-rate-limit:
+        specifier: ^7.5.0
+        version: 7.5.0(express@4.21.2)
       helmet:
         specifier: ^8.0.0
         version: 8.1.0
@@ -3020,6 +3023,10 @@ snapshots:
       jest-matcher-utils: 29.7.0
       jest-message-util: 29.7.0
       jest-util: 29.7.0
+
+  express-rate-limit@7.5.0(express@4.21.2):
+    dependencies:
+      express: 4.21.2
 
   express-rate-limit@7.5.0(express@5.1.0):
     dependencies:

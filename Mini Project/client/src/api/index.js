@@ -5,19 +5,19 @@ export const getTodoById = async (id) => {
   try {
     const result = await API.get(`/todo/${id}`);
     if (result.status === 200) {
-      return result;
+      return { status: true, result };
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        return error.response.data.message || error.message;
+        return { status: false, result: error.response.data.message || error.message }
       } else if (error.request) {
-        return "No response from server";
+        return { status: false, result: "No response from server" }
       } else {
-        return "Error setting up request:" + error.message;
+        return { status: false, result: "Error setting up request:" + error.message }
       }
     } else {
-      return "Unexpected error:" + error;
+      return { status: false, result: "Unexpected error:" + error }
     }
   }
 };
@@ -26,19 +26,19 @@ export const getTodos = async () => {
   try {
     const result = await API.get("/todo");
     if (result.status === 200) {
-      return result;
+      return { status: true, result };
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        return error.response.data.message || error.message;
+        return { status: false, result: error.response.data.message || error.message }
       } else if (error.request) {
-        return "No response from server";
+        return { status: false, result: "No response from server" }
       } else {
-        return "Error setting up request:" + error.message;
+        return { status: false, result: "Error setting up request:" + error.message }
       }
     } else {
-      return "Unexpected error:" + error;
+      return { status: false, result: "Unexpected error:" + error }
     }
   }
 };
@@ -46,65 +46,67 @@ export const getTodos = async () => {
 export const createTodo = async (data) => {
   try {
     const result = await API.post("/todo", {
+      order: data.order,
       description: data.description,
       name: data.name,
     });
-    if (result.status === 200) {
-      return result;
+    if (result.status === 201) {
+      return { status: true, result };
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        return error.response.data.message || error.message;
+        return { status: false, result: error.response.data.message || error.message }
       } else if (error.request) {
-        return "No response from server";
+        return { status: false, result: "No response from server" }
       } else {
-        return "Error setting up request:" + error.message;
+        return { status: false, result: "Error setting up request:" + error.message }
       }
     } else {
-      return "Unexpected error:" + error;
+      return { status: false, result: "Unexpected error:" + error }
     }
   }
 };
 
 export const updateOrderTodo = async (dataOrder) => {
   try {
-    const result = await API.patch(`/todo`, dataOrder);
+    const body = dataOrder.map(({ id, order }) => ({ id, order }))
+    const result = await API.put(`/todo`, body);
     if (result.status === 201) {
-      return result;
+      return { status: true, result };
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        return error.response.data.message || error.message;
+        return { status: false, result: error.response.data.message || error.message }
       } else if (error.request) {
-        return "No response from server";
+        return { status: false, result: "No response from server" }
       } else {
-        return "Error setting up request:" + error.message;
+        return { status: false, result: "Error setting up request:" + error.message }
       }
     } else {
-      return "Unexpected error:" + error;
+      return { status: false, result: "Unexpected error:" + error }
     }
   }
 };
 
 export const updateTodo = async ({ id, data }) => {
   try {
-    const result = await API.put(`/todo/${id}`, data);
+    const result = await API.patch(`/todo/${id}`, data);
     if (result.status === 200) {
-      return result;
+      return { status: true, result };
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        return error.response.data.message || error.message;
+        return { status: false, result: error.response.data.message || error.message }
       } else if (error.request) {
-        return "No response from server";
+        return { status: false, result: "No response from server" }
       } else {
-        return "Error setting up request:" + error.message;
+        return { status: false, result: "Error setting up request:" + error.message }
       }
     } else {
-      return "Unexpected error:" + error;
+      return { status: false, result: "Unexpected error:" + error }
     }
   }
 };
@@ -112,20 +114,20 @@ export const updateTodo = async ({ id, data }) => {
 export const deleteTodo = async (id) => {
   try {
     const result = await API.delete(`/todo/${id}`);
-    if (result.status === 200) {
-      return result;
+    if (result.status === 201) {
+      return { status: true, result };
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        return error.response.data.message || error.message;
+        return { status: false, result: error.response.data.message || error.message }
       } else if (error.request) {
-        return "No response from server";
+        return { status: false, result: "No response from server" }
       } else {
-        return "Error setting up request:" + error.message;
+        return { status: false, result: "Error setting up request:" + error.message }
       }
     } else {
-      return "Unexpected error:" + error;
+      return { status: false, result: "Unexpected error:" + error }
     }
   }
 };

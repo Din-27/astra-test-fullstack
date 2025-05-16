@@ -1,11 +1,14 @@
 import { Context } from "koa";
 import { ITodo } from "../../libs/interfaces/todo";
-import { TData, TodoRepository } from "../../libs/repository/todo.repository";
+import { PrismaClient } from "../../../generated/prisma";
+
+const prisma = new PrismaClient();
+
+export type TData = Omit<ITodo, "id">;
 
 export const getTodos = async (ctx: Context) => {
   try {
-    const todoRepo = new TodoRepository();
-    const data = await todoRepo.findAll();
+    const data = await prisma.todos.findMany({ orderBy: { order: "asc" } });
     ctx.status = 200;
     ctx.body = data;
     return;
@@ -18,13 +21,11 @@ export const getTodos = async (ctx: Context) => {
 export const getTodoById = async (ctx: Context) => {
   try {
     const { id } = ctx.params;
-    const todoRepo = new TodoRepository();
-    const data = await todoRepo.findOne({ where: { id: Number(id) } });
+    const data = await prisma.todos.findFirst({ where: { id: Number(id) } });
     ctx.status = 200;
     ctx.body = data;
     return;
   } catch (error) {
-    console.log(error);
     console.log(error);
     throw new Error("Server Error");
   }
@@ -32,23 +33,26 @@ export const getTodoById = async (ctx: Context) => {
 
 export const createTodo = async (ctx: Context) => {
   try {
-    const { name, description, order } = ctx.request.body as TData;
-    const todoRepo = new TodoRepository();
-    const todo = await todoRepo.findOne({ where: { name: String(name) } });
+    const { name, description } = ctx.request.body as TData;
+    const todo = await prisma.todos.findFirst({
+      where: { name: String(name) },
+    });
     if (todo) {
       ctx.status = 409;
       ctx.body = { message: `Todo with name: ${name}, already exist !` };
       return;
     }
-    const data = await todoRepo.create({
-      data: {
-        description,
-        name,
-        order,
-      },
+    await prisma.$transaction(async (tx) => {
+      const itemTodoCount = await tx.todos.count();
+      await tx.todos.create({
+        data: {
+          description,
+          name,
+          order: itemTodoCount + 1,
+        },
+      });
     });
-    ctx.status = 200;
-    ctx.body = data;
+    ctx.status = 201;
     return;
   } catch (error) {
     console.log(error);
@@ -60,23 +64,31 @@ export const updateTodo = async (ctx: Context) => {
   try {
     const { id } = ctx.params;
     const { name, description } = ctx.request.body as TData;
-    const todoRepo = new TodoRepository();
-    const todo = await todoRepo.findOne({ where: { id: Number(id) } });
+    const todo = await prisma.todos.findFirst({ where: { id: Number(id) } });
     if (!todo) {
       ctx.status = 404;
       ctx.body = { message: `Todo with id: ${id}, Not Found !` };
       return;
     }
-    const data = await todoRepo.update({
-      where: { id: Number(id) },
-      data: {
-        description,
-        name,
-        order: Number(todo?.order),
-      },
+    const todoName = await prisma.todos.findFirst({
+      where: { AND: [{ id: Number(id) }, { name }] },
+    });
+    if (!todoName) {
+      ctx.status = 404;
+      ctx.body = { message: `Todo with name: ${name}, Already Exist !` };
+      return;
+    }
+    await prisma.$transaction(async (tx) => {
+      await tx.todos.update({
+        where: { id: Number(id) },
+        data: {
+          description,
+          name,
+          order: Number(todo?.order),
+        },
+      });
     });
     ctx.status = 200;
-    ctx.body = data;
     return;
   } catch (error) {
     console.log(error);
@@ -87,18 +99,17 @@ export const updateTodo = async (ctx: Context) => {
 export const updateOrderTodo = async (ctx: Context) => {
   try {
     const body = ctx.request.body as Array<ITodo>;
-    const todoRepo = new TodoRepository();
-    for (const item of body) {
-      const { id, name, description, order } = item;
-      await todoRepo.update({
-        where: { id },
-        data: {
-          description,
-          name,
-          order,
-        },
-      });
-    }
+    await prisma.$transaction(async (tx) => {
+      for (const item of body) {
+        const { id, order } = item;
+        await tx.todos.update({
+          where: { id },
+          data: {
+            order,
+          },
+        });
+      }
+    });
     ctx.status = 201;
     return;
   } catch (error) {
@@ -110,18 +121,29 @@ export const updateOrderTodo = async (ctx: Context) => {
 export const deleteTodo = async (ctx: Context) => {
   try {
     const { id } = ctx.params;
-    const todoRepo = new TodoRepository();
-    const todo = await todoRepo.findOne({ where: { id: Number(id) } });
+    const todo = await prisma.todos.findFirst({ where: { id: Number(id) } });
     if (!todo) {
       ctx.status = 404;
       ctx.body = { message: `Todo with id: ${id}, Not Found !` };
       return;
     }
-    const data = await todoRepo.destroy({
-      where: { id: Number(id) },
+    await prisma.$transaction(async (tx) => {
+      await tx.todos.delete({
+        where: { id: Number(id) },
+      });
+      const todos = await tx.todos.findMany();
+      await Promise.all(
+        todos.map((item, index) =>
+          tx.todos.update({
+            where: { id: item.id },
+            data: {
+              order: index + 1,
+            },
+          })
+        )
+      );
     });
-    ctx.status = 200;
-    ctx.body = data;
+    ctx.status = 201;
     return;
   } catch (error) {
     console.log(error);

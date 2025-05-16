@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { loggerFile } from "../libs/logger";
+import { loggerFile } from "../../libs/logger";
 import chalk from "chalk";
 
 type TStatusCodeLabel = {

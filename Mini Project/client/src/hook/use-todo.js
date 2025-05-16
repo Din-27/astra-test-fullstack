@@ -31,6 +31,10 @@ export const useTodo = () => {
     });
   };
 
+  const handleLoading = (action) => {
+    setLoading(action);
+  };
+
   const handleDrawer = async (id) => {
     let result = null;
     if (typeof id === "number") {
@@ -43,7 +47,7 @@ export const useTodo = () => {
     setDrawer((prev) => ({
       ...prev,
       display: !prev.display,
-      data: result ? result.data : null,
+      data: result ? result.result.data : null,
     }));
   };
 
@@ -91,12 +95,12 @@ export const useTodo = () => {
 
   const handleEditItem = async (item) => {
     const result = await getTodoById(item.id);
-    if (result.status === 200) {
+    if (result.status) {
       setForm({
         ...form,
-        id: result.data.id,
-        name: result.data.name,
-        description: result.data.description,
+        id: result.result.data.id,
+        name: result.result.data.name,
+        description: result.result.data.description,
       });
       setModal((prev) => ({
         ...prev,
@@ -104,7 +108,7 @@ export const useTodo = () => {
         type: !prev.display ? "edit" : "",
       }));
     } else {
-      toast.error(result);
+      toast.error(result.result);
     }
   };
 
@@ -112,10 +116,10 @@ export const useTodo = () => {
     setLoading(true)
     try {
       const result = await getTodos();
-      if (result.status === 200) {
-        setData(result.data);
+      if (result.status) {
+        setData(result.result.data);
       } else {
-        toast.error(result);
+        toast.error(result.result);
       }
     } catch (error) {
       toast.error(error.response.data.message || error.message)
@@ -126,49 +130,49 @@ export const useTodo = () => {
 
   const handleCreateTodo = async (e) => {
     e.preventDefault();
-    const result = await createTodo({
-      ...form,
-      order: data.length + 1,
-    });
-    if (result.status === 200) {
+    const result = await createTodo(form);
+    if (result.status) {
       await handleGetTodos();
       handleModalAdd();
+      toast.success('Success create Todo');
     } else {
-      toast.error(result);
+      toast.error(result.result);
     }
   };
 
   const handleUpdateOrderTodo = async (dataOrder) => {
     const result = await updateOrderTodo(dataOrder);
-    if (result.status === 201) {
+    if (result.status) {
       handleGetTodos();
     } else {
-      toast.error(result);
+      toast.error(result.result);
     }
   };
 
   const handleUpdateTodo = async (id, e) => {
     e.preventDefault();
     const result = await updateTodo({ id: form.id, data: form });
-    if (result.status === 200) {
+    if (result.status) {
       handleGetTodos();
       handleOffModalEdit();
+      toast.success('Success edit Todo');
     } else {
-      toast.error(result);
+      toast.error(result.result);
     }
   };
 
   const handleDeleteTodo = async (id, e) => {
     e.preventDefault();
     const result = await deleteTodo(id);
-    if (result.status === 200) {
+    if (result.status) {
       handleGetTodos();
       setDropdown({
         condtion: false,
         id: null,
       });
+      toast.success('Success delete Todo');
     } else {
-      toast.error(result);
+      toast.error(result.result);
     }
   };
 
@@ -189,7 +193,9 @@ export const useTodo = () => {
     handleModalAdd,
     handleOffModalEdit,
     handleDrawer,
+    handleLoading,
     dropdown,
+    loading,
     drawer,
     modal,
     form,

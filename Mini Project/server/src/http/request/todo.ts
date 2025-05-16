@@ -18,8 +18,6 @@ export const UpdateTodoSchema = Joi.object({
 export const UpdateTodoOrderSchema = Joi.array().items(
   Joi.object({
     id: Joi.number().required(),
-    description: Joi.string().min(1).required(),
-    name: Joi.string().min(1).required(),
     order: Joi.number().required(),
   })
 );

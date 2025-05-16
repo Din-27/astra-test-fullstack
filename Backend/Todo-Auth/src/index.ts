@@ -2,13 +2,22 @@ import express from "express";
 import morgan from "morgan";
 import helmet from "helmet";
 import cors from "cors";
-import routes from "./routes";
-import { requestLogger } from "./middlewares/requetsLogger";
+import routes from "./http/routes";
+import { rateLimit } from "express-rate-limit";
+import { requestLogger } from "./http/middlewares/requetsLogger";
 
 require("dotenv").config();
 
 const app = express();
 
+app.use(
+  rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 50,
+    standardHeaders: "draft-8",
+    legacyHeaders: false,
+  })
+);
 app.use(morgan("dev"));
 app.use(requestLogger);
 app.use(helmet());

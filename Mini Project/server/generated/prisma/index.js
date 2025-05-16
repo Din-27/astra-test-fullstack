@@ -131,7 +131,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\HERDIYANA\\LEARNING\\astra-test-fullstack\\Mini Project\\server\\generated\\prisma",
+      "value": "C:\\Herdin\\Test\\astra-test-fullstack\\Mini Project\\server\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -145,7 +145,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\HERDIYANA\\LEARNING\\astra-test-fullstack\\Mini Project\\server\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Herdin\\Test\\astra-test-fullstack\\Mini Project\\server\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

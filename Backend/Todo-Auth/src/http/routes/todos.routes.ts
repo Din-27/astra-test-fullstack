@@ -35,10 +35,10 @@ router.post(
   createTodo
 );
 
-router.patch(
+router.put(
   "/:id",
   requestValidate({
-    type: "PATCH",
+    type: "PUT",
     schema: UpdateTodoSchema,
   }),
   updateTodo

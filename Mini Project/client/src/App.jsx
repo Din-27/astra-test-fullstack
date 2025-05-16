@@ -1,7 +1,6 @@
 import DragAndDropItem from "./components/DragAndDropItem";
 import Drawer from "./components/Drawer";
 import ModalItem from "./components/ModalItem";
-import Spinner from "./components/Spinner";
 import { useTodo } from "./hook/use-todo";
 
 function App() {
@@ -20,14 +19,14 @@ function App() {
     handleUpdateTodo,
     handleModalAdd,
     handleDrawer,
+    handleLoading,
+    loading,
     modal,
     drawer,
   } = useTodo();
 
-  if (!data) {
-    return <Spinner />;
-  }
   console.clear();
+
   return (
     <>
       {dropdown.condtion && (
@@ -82,6 +81,8 @@ function App() {
             handleUpdateOrderDrag={handleUpdateOrderTodo}
             handleDeleteItem={handleDeleteTodo}
             handleOnDrawer={handleDrawer}
+            handleLoading={handleLoading}
+            loading={loading}
           />
         </div>
       </div>
